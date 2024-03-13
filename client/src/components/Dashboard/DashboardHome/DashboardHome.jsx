@@ -3,6 +3,9 @@ import Image from "next/image";
 import { FaUserNurse } from "react-icons/fa";
 import { FaUserDoctor } from "react-icons/fa6";
 import { FaUser } from "react-icons/fa";
+import { FaRegEdit } from "react-icons/fa";
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { FaFile } from "react-icons/fa";
 
 const DashboardHome = () => {
   return (
@@ -22,8 +25,8 @@ const DashboardHome = () => {
         <p className="text-gray-600 font-medium text-sm">Hey, Chandler Bing</p>
       </div>
 
-      {/* nurse and patients stats */}
-      <div className="flex items-center gap-4 mt-8">
+      {/* nurse, doctor and patients stats */}
+      <div className="flex items-center gap-4 my-8">
         {/* nurses */}
         <div className="bg-purple-400 text-white flex items-center gap-4 rounded-xl max-w-44 justify-center p-4">
           <FaUserNurse size={40} />
@@ -48,6 +51,38 @@ const DashboardHome = () => {
             <h3 className="text-xl font-bold">10</h3>
           </div>
         </div>
+      </div>
+
+      {/* patients data in table format */}
+
+      <div className="overflow-x-auto">
+        <table className="table table-zebra">
+          {/* head */}
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Patient Id</th>
+              <th>Name</th>
+              <th>Visited</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {/* row 1 */}
+            <tr>
+              <th>1</th>
+              <td>Cy Ganderton</td>
+              <td>Quality Control Specialist</td>
+              <td>13-03-2024</td>
+              <td className="flex items-center gap-3">
+                <FaRegEdit size={20} className="text-green-600"/>
+                <RiDeleteBin6Line size={22} className="text-red-600"/>
+                <FaFile size={20} className="text-yellow-600"/>
+              </td>
+            </tr>
+           
+          </tbody>
+        </table>
       </div>
     </div>
   );
