@@ -6,6 +6,7 @@ import { FaUser } from "react-icons/fa";
 import { FaRegEdit } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaFile } from "react-icons/fa";
+import { IoSearchOutline } from "react-icons/io5";
 
 const DashboardHome = () => {
   return (
@@ -53,6 +54,26 @@ const DashboardHome = () => {
         </div>
       </div>
 
+      {/* search and filter patients */}
+      <div className="flex gap-8 mb-10 items-center">
+        <div className="relative">
+        <input
+          type="text"
+          placeholder="Search Patient"
+          className="input input-bordered input-primary w-full max-w-xs"
+        />
+        <IoSearchOutline className="absolute top-3 text-purple-600 right-2" size={25}/>
+        </div>
+       
+        <select defaultValue="default" className="select select-primary w-full max-w-xs">
+          <option value="default" disabled>
+            Sort patients
+          </option>
+          <option>Newest patients</option>
+          <option>Oldest patients</option>
+         
+        </select>
+      </div>
       {/* patients data in table format */}
 
       <div className="overflow-x-auto">
@@ -75,12 +96,11 @@ const DashboardHome = () => {
               <td>Quality Control Specialist</td>
               <td>13-03-2024</td>
               <td className="flex items-center gap-3">
-                <FaRegEdit size={20} className="text-green-600"/>
-                <RiDeleteBin6Line size={22} className="text-red-600"/>
-                <FaFile size={20} className="text-yellow-600"/>
+                <FaRegEdit size={20} className="text-green-600" />
+                <RiDeleteBin6Line size={22} className="text-red-600" />
+                <FaFile size={20} className="text-yellow-600" />
               </td>
             </tr>
-           
           </tbody>
         </table>
       </div>

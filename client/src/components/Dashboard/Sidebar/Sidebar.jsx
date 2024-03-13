@@ -23,7 +23,7 @@ const Sidebar = () => {
           onClick={() => setSidebarOpen(!sidebarOpen)}
           className="absolute z-50 flex flex-col w-24 items-center top-4"
         >
-          <GiHealthPotion size={40} />
+          <GiHealthPotion size={40} className="text-purple-200"/>
         </div>
         <div
           className={`${
