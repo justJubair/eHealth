@@ -27,7 +27,7 @@ const DashboardHome = () => {
       </div>
 
       {/* nurse, doctor and patients stats */}
-      <div className="flex items-center gap-4 my-8">
+      <div className="flex flex-row flex-wrap md:flex-nowrap items-center justify-center md:justify-start gap-4 my-8">
         {/* nurses */}
         <div className="bg-purple-400 text-white flex items-center gap-4 rounded-xl max-w-44 justify-center p-4">
           <FaUserNurse size={40} />
@@ -56,11 +56,11 @@ const DashboardHome = () => {
 
       {/* search and filter patients */}
       <div className="flex gap-8 mb-10 items-center">
-        <div className="relative">
+        <div className="relative max-w-xs w-full">
         <input
           type="text"
-          placeholder="Search Patient"
-          className="input input-bordered input-primary w-full max-w-xs"
+          placeholder="Search..."
+          className="input input-bordered input-primary w-full"
         />
         <IoSearchOutline className="absolute top-3 text-purple-600 right-2" size={25}/>
         </div>
