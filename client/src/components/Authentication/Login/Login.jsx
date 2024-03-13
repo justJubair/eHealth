@@ -27,7 +27,7 @@ const Login = () => {
             priority
             src={LoginImg}
             width={300}
-            height={200}
+            height={100}
             alt="login page banner"
           />
         </div>
@@ -60,7 +60,7 @@ const Login = () => {
             </div>
             <button
               type="submit"
-              className="mt-8 btn-block btn text-[#7388d3] btn-outline hover:bg-[#90A1DC]"
+              className="mt-8 btn-block btn text-[#7388d3] hover:bg-[#90A1DC] hover:text-white"
             >
               Login
             </button>

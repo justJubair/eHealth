@@ -7,7 +7,7 @@ import { GiHealthPotion } from "react-icons/gi";
 import Link from "next/link";
 const Register = () => {
   return (
-    <div className="max-w-screen-lg mx-auto px-4">
+    <div className="max-w-screen-lg mx-auto px-4 md:py-6 md:h-screen">
       <div className="flex items-center justify-center gap-10">
         {/* side banner */}
         {/* hidden for mobile view */}
@@ -27,7 +27,7 @@ const Register = () => {
             priority
             src={LoginImg}
             width={300}
-            height={200}
+            height={100}
             alt="login page banner"
           />
         </div>
@@ -48,7 +48,7 @@ const Register = () => {
             Register Now
           </h2>
           <form>
-            <div className="flex flex-col gap-5">
+            <div className="flex flex-col gap-5 pb-8">
               <input
                 type="text"
                 placeholder="Name"
@@ -75,13 +75,13 @@ const Register = () => {
             </div>
             <button
               type="submit"
-              className="mt-8 btn-block btn text-[#7388d3] btn-outline hover:bg-[#90A1DC]"
+              className="btn-block btn text-[#7388d3] hover:bg-[#90A1DC] hover:text-white"
             >
               Register
             </button>
           </form>
           <div className="divider">OR</div>
-          <Link href="/" className="btn-block btn text-[#7488d1]  hover:bg-[#90A1DC] hover:text-white">
+          <Link href="/" className="btn-block btn text-[#7488d1]  hover:bg-[#90A1DC] hover:text-white mb-16 md:mb-10 lg:mb-0">
             Login
           </Link>
         </div>
