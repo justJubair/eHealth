@@ -1,10 +1,12 @@
+import Sidebar from "@/components/Dashboard/Sidebar/Sidebar";
+
 const DashboardLayout = ({children}) => {
   return (
     <>
-      <div className="grid grid-cols-12 min-h-screen">
+      <div className="grid grid-cols-12">
         {/* sidebar */}
         <div>
-        <h1>Sidebar</h1>
+       <Sidebar/>
         </div>
 
         {/* content */}
