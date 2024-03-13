@@ -7,7 +7,7 @@ const AddUser = () => {
 
       <div>
         {/* add new patient form */}
-        <form className="max-w-5xl flex flex-col items-center mx-auto shadow-2xl bg-slate-50 p-6 rounded-xl space-y-3 mt-10">
+        <form className="max-w-5xl flex flex-col items-center mx-auto shadow-2xl bg-slate-50 p-6 rounded-xl space-y-3 mt-6 md:mt-0 lg:mt-6">
           {/* name and age */}
           <div className="flex flex-col md:flex-row items-center gap-4 w-full">
             <label className="form-control w-full">
