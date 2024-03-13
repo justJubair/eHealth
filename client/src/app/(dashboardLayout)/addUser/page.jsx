@@ -1,7 +1,9 @@
+import AddUser from "@/components/Dashboard/AddUser/AddUser";
+
 const AddUserPage = () => {
     return(
         <div>
-             <p> Add User page </p>
+            <AddUser/>
         </div>
     )}
 export default AddUserPage;

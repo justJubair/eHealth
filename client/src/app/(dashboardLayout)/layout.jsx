@@ -10,7 +10,7 @@ const DashboardLayout = ({children}) => {
         </div>
 
         {/* content */}
-        <div className="col-span-12 lg:col-span-11  mt-16 lg:mt-0 px-6 py-4 lg:px-1">
+        <div className="col-span-12 lg:col-span-11 px-6 py-4 lg:px-1">
           {children}
         </div>
       </div>

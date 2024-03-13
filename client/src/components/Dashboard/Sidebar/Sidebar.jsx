@@ -21,9 +21,9 @@ const Sidebar = () => {
       <div className="fixed lg:relative z-50">
         <div
           onClick={() => setSidebarOpen(!sidebarOpen)}
-          className="absolute z-50 flex flex-col w-24 items-center top-4"
+          className="absolute z-50 flex flex-col w-24 items-center top-4 hover:cursor-pointer"
         >
-          <GiHealthPotion size={40} className="text-purple-800"/>
+          <GiHealthPotion size={40} className={`${sidebarOpen ? "text-purple-700" : "text-white"} duration-200`}/>
         </div>
         <div
           className={`${

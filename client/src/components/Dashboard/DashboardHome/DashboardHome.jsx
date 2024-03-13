@@ -10,7 +10,7 @@ import { IoSearchOutline } from "react-icons/io5";
 
 const DashboardHome = () => {
   return (
-    <div>
+    <div className="mt-16 lg:mt-0">
       {/* avatar */}
       <div className="flex items-center gap-2">
         <div className="avatar online">
