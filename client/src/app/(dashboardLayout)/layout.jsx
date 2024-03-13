@@ -5,12 +5,12 @@ const DashboardLayout = ({children}) => {
     <>
       <div className="grid grid-cols-12">
         {/* sidebar */}
-        <div>
+        <div className="">
        <Sidebar/>
         </div>
 
         {/* content */}
-        <div className="col-span-12 lg:col-span-11 mt-14 md:mt-0">
+        <div className="col-span-12 lg:col-span-11  mt-20 lg:mt-0 px-6 py-4 lg:px-1">
           {children}
         </div>
       </div>
