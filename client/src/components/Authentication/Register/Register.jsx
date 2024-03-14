@@ -1,11 +1,37 @@
+"use client";
 // import image
 import Image from "next/image";
 import LoginImg from "../../../assets/LoginImg.png";
 
-// import icons
+// import icon
 import { GiHealthPotion } from "react-icons/gi";
+
 import Link from "next/link";
+import toast from "react-hot-toast";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+
 const Register = () => {
+  const { push } = useRouter();
+  // handle register form
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const name = form.name.value;
+    const role = form.role.value;
+    const email = form.email.value;
+    const password = form.password.value;
+    if (password.length < 6) {
+      return toast.error("Password must be at least six characters");
+    }
+    const user = { name, role, email, password, loggedIn: true };
+    const dbResponse = await axios.post("http://localhost:5000/users", user);
+    if (dbResponse?.data?.insertedId) {
+      toast.success("Registered successfully");
+      form.reset();
+      push("/dashboard");
+    }
+  };
   return (
     <div className="max-w-screen-lg mx-auto px-4 md:py-6 md:h-screen">
       <div className="flex items-center justify-center gap-10">
@@ -47,30 +73,40 @@ const Register = () => {
           <h2 className="text-2xl text-center md:mb-6 mb-4 font-bold text-[#5b76d7] animate-pulse">
             Register Now
           </h2>
-          <form>
+          <form onSubmit={handleRegister}>
             <div className="flex flex-col gap-5 pb-8">
               <input
                 type="text"
                 placeholder="Name"
-                className="input input-bordered input-primary w-full "
+                name="name"
+                className="input input-bordered input-primary w-full"
+                required
               />
-              <select defaultValue="default" className="select select-primary w-full">
-                <option value='default' disabled>
+              <select
+                defaultValue="default"
+                name="role"
+                className="select select-primary w-full"
+                required
+              >
+                <option value="default" disabled>
                   Select your role?
                 </option>
-                <option>Doctor</option>
-                <option>Nurse</option>
-               
+                <option value="doctor">Doctor</option>
+                <option value="nurse">Nurse</option>
               </select>
               <input
                 type="email"
                 placeholder="Emaill"
-                className="input input-bordered input-primary w-full "
+                name="email"
+                className="input input-bordered input-primary w-full"
+                required
               />
               <input
                 type="password"
+                name="password"
                 placeholder="Password"
-                className="input input-bordered input-primary w-full "
+                className="input input-bordered input-primary w-full"
+                required
               />
             </div>
             <button
@@ -81,7 +117,10 @@ const Register = () => {
             </button>
           </form>
           <div className="divider">OR</div>
-          <Link href="/" className="btn-block btn text-[#7488d1]  hover:bg-[#90A1DC] hover:text-white mb-16 md:mb-10 lg:mb-0">
+          <Link
+            href="/"
+            className="btn-block btn text-[#7488d1]  hover:bg-[#90A1DC] hover:text-white mb-16 md:mb-10 lg:mb-0"
+          >
             Login
           </Link>
         </div>
