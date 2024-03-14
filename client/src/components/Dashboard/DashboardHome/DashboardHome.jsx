@@ -18,13 +18,43 @@ import { useEffect, useState } from "react";
 import PatientUpdateModal from "./PatientUpdateModal";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { getASingleUser } from "@/api/getASingleUser";
 
-const DashboardHome = ({ patients }) => {
+
+const DashboardHome = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [searchBy, setSearchBy] = useState("")
+  const [currentUser, setCurrentUser] = useState({})
+  const [patients, setPatients] = useState([])
+  const [sortPatients, setSortPatients] = useState("")
 
   const [user] = useAuthState(auth);
 
   const router = useRouter();
+
+  useEffect(()=>{
+    const getUser = async()=>{
+      const res = await getASingleUser(user?.email)
+      setCurrentUser(res)
+    }
+
+    getUser()
+  },[user])
+
+  useEffect(()=>{
+    fetch(`http://localhost:5000/patients?search=${searchBy}`)
+    .then(res=> res.json())
+    .then(data=> setPatients(data))
+  },[searchBy])
+
+  // handle search
+  const handleSearch = (e)=>{
+    e.preventDefault()
+    setSearchBy(e.target.search.value)
+  }
+
+
+
 
   const handleDeletePatient = async(_id)=>{
    
@@ -47,11 +77,14 @@ const DashboardHome = ({ patients }) => {
         if (result.isConfirmed) {
          axios.delete(`http://localhost:5000/patients/${_id}`).then((res)=>{
           if(res?.data?.deletedCount>0){
+            const updatedPatients = patients?.filter(patient=> patient?._id !== _id)
+            setPatients(updatedPatients)
             swalWithBootstrapButtons.fire({
               title: "Deleted!",
               text: "Patient has been deleted.",
               icon: "success"
             });
+
           }
          })
           
@@ -137,26 +170,35 @@ const DashboardHome = ({ patients }) => {
       {/* search and filter patients */}
       <div className="flex gap-8 mb-10 items-center">
         <div className="relative max-w-xs w-full">
+          <form onSubmit={handleSearch}>
+
           <input
             type="text"
             placeholder="Search..."
+            name="search"
             className="input input-bordered input-primary w-full"
           />
+          <button type="submit">
+
           <IoSearchOutline
+            
             className="absolute top-3 text-purple-600 right-2"
             size={25}
           />
+          </button>
+          </form>
         </div>
 
         <select
           defaultValue="default"
           className="select select-primary w-full max-w-xs"
+          onChange={(e)=> handleSort(e)}
         >
           <option value="default" disabled>
             Sort patients
           </option>
-          <option>Newest patients</option>
-          <option>Oldest patients</option>
+          <option value="newest">Newest patients</option>
+          <option value="oldest">Oldest patients</option>
         </select>
       </div>
       {/* patients data in table format */}
@@ -194,7 +236,7 @@ const DashboardHome = ({ patients }) => {
                 <td className="flex items-center gap-3">
                   <FaRegEdit onClick={()=>document.getElementById("modal"+patient?._id).showModal()} size={20} className="text-green-600 hover:cursor-pointer" />
                   <PatientUpdateModal id={patient?._id} patient={patient}/>
-                  <RiDeleteBin6Line onClick={()=> handleDeletePatient(patient?._id)} size={22} className="text-red-600 hover:cursor-pointer" />
+                  {currentUser?.role==="doctor" && <RiDeleteBin6Line onClick={()=> handleDeletePatient(patient?._id)} size={22} className="text-red-600 hover:cursor-pointer" />}
                   <FaFile size={20} className="text-yellow-600" />
                 </td>
               </tr>

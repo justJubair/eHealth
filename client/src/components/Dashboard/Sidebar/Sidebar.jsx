@@ -6,18 +6,33 @@ import { MdWidgets } from "react-icons/md";
 import { MdOutlineLogout } from "react-icons/md";
 
 // import usestate
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // import usePathname
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { signOut } from "firebase/auth";
 import { auth } from "@/firebase/config";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { getASingleUser } from "@/api/getASingleUser";
 
 const Sidebar = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
+  const [currentUser, setCurrentUser] = useState({})
+  const [user] = useAuthState(auth);
+ 
   const pathname = usePathname();
+
+  useEffect(()=>{
+    const getUser = async()=>{
+      const res = await getASingleUser(user?.email)
+      setCurrentUser(res)
+    }
+
+    getUser()
+  },[user])
+
+  console.log(currentUser)
   return (
     <>
       <div className="fixed lg:relative z-50">
@@ -43,15 +58,16 @@ const Sidebar = () => {
                   }
                 />
               </Link>
-
-              <Link href="/addPatient">
+                
+                {currentUser?.role==="doctor" &&  <Link href="/addPatient">
                 <AiOutlineUsergroupAdd
                   size={30}
                   className={
                     pathname == "/addPatient" ? "text-purple-700" : "text-white"
                   }
                 />
-              </Link>
+              </Link>}
+             
             </div>
             <MdOutlineLogout onClick={()=> signOut(auth)} size={30} className="text-white hover:cursor-pointer" />
           </div>
