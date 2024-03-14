@@ -44,11 +44,11 @@ const Sidebar = () => {
                 />
               </Link>
 
-              <Link href="/addUser">
+              <Link href="/addPatient">
                 <AiOutlineUsergroupAdd
                   size={30}
                   className={
-                    pathname == "/addUser" ? "text-purple-700" : "text-white"
+                    pathname == "/addPatient" ? "text-purple-700" : "text-white"
                   }
                 />
               </Link>

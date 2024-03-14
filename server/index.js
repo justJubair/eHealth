@@ -1,8 +1,10 @@
 require("dotenv").config();
 const express = require("express");
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, } = require("mongodb");
 const cors = require("cors");
+const multer = require("multer")
 const app = express();
+
 const port = process.env.PORT || 5000;
 
 // middlewares
@@ -23,7 +25,21 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
 
+    const storage = multer.diskStorage({
+      destination: function (req, file, cb) {
+        cb(null, './files')
+      },
+      filename: function (req, file, cb) {
+        const uniqueSuffix = Date.now()
+        cb(null, uniqueSuffix+file.originalname)
+      }
+    })
+    
+    const upload = multer({ storage: storage })
+
+
     const usersCollection = client.db("eHealthDB").collection("users");
+    const patientCollection = client.db("eHealthDB").collection("patients");
 
     // POST; a user
     app.post("/users", async (req, res) => {
@@ -36,14 +52,28 @@ async function run() {
     });
 
     // GET; a single user with email query
-    app.get("/users", async(req,res)=>{
+    app.get("/users", async (req, res) => {
       let query = {};
-      if(req?.query?.email){
-        query = {email: req?.query?.email}
+      if (req?.query?.email) {
+        query = { email: req?.query?.email };
       }
-      const result = await usersCollection.findOne(query)
+      const result = await usersCollection.findOne(query);
+      res.send(result);
+    }); 
+
+    // POST; a new patient
+    app.post("/patients",upload.single("prescription"), async (req, res) => {
+     const patient = req?.body
+     const prescription = req?.file?.filename
+     try{
+      const result = await patientCollection.insertOne({patient, prescription})
       res.send(result)
-    })
+      
+     }
+     catch(err){
+      console.log(err)
+     }
+    });
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });

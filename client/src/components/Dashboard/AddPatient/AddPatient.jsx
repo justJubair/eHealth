@@ -1,4 +1,51 @@
-const AddUser = () => {
+"use client";
+
+import axios from "axios";
+
+const AddPatient = () => {
+  // handle add patient form
+  const handleAddPatient = async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    // const name = form.name.value;
+    // const age = form.age.value;
+    // const weight = form.weight.value;
+    // const gender = form.gender.value;
+    // const diagnosis = form.diagnosis.value;
+    // const bloodPressure = form.bloodPressure.value;
+    // const prescriptionFile = form.prescription.files[0];
+
+    const formData = new FormData();
+
+    formData.append("name", form.name.value);
+    formData.append("age", form.age.value);
+    formData.append("weight", form.weight.value);
+    formData.append("gender", form.gender.value);
+    formData.append("diagnosis", form.diagnosis.value);
+    formData.append("bloodPressure", form.bloodPressure.value);
+    formData.append("prescription", form.prescription.files[0]);
+      
+    // const imageFile = { image: form.image.files[0] };
+
+    // const newPatient = {name, age, weight, gender, diagnosis, bloodPressure}
+
+    try {
+     
+      const response = await axios.post(
+        "http://localhost:5000/patients",
+        formData,
+        {
+          headers: {
+            "content-type": "multipart/form-data",
+          },
+        }
+      );
+      console.log(response); // Assuming the server responds with data
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <div>
       <h2 className="text-xl md:text-2xl text-center border-b-2 w-52 md:w-72 mx-auto text-[#5d78da] font-medium pb-1">
@@ -7,7 +54,10 @@ const AddUser = () => {
 
       <div>
         {/* add new patient form */}
-        <form className="max-w-5xl flex flex-col items-center mx-auto shadow-2xl bg-slate-50 p-6 rounded-xl space-y-3 mt-6 md:mt-0 lg:mt-6">
+        <form
+          onSubmit={handleAddPatient}
+          className="max-w-5xl flex flex-col items-center mx-auto shadow-2xl bg-slate-50 p-6 rounded-xl space-y-3 mt-6 md:mt-0 lg:mt-6"
+        >
           {/* name and age */}
           <div className="flex flex-col md:flex-row items-center gap-4 w-full">
             <label className="form-control w-full">
@@ -17,6 +67,7 @@ const AddUser = () => {
               <input
                 type="text"
                 placeholder="Name"
+                name="name"
                 className="input input-bordered input-primary w-full"
               />
             </label>
@@ -28,6 +79,7 @@ const AddUser = () => {
               <input
                 type="text"
                 placeholder="Age"
+                name="age"
                 className="input input-bordered input-primary w-full"
               />
             </label>
@@ -42,22 +94,24 @@ const AddUser = () => {
               <input
                 type="text"
                 placeholder="Weight"
+                name="weight"
                 className="input input-bordered input-primary w-full"
               />
             </label>
             <label className="form-control w-full">
               <div className="label">
-                <span className="label-text">Weight</span>
+                <span className="label-text">Gender</span>
               </div>
               <select
+                name="gender"
                 defaultValue="default"
                 className="select select-primary w-full"
               >
                 <option value="default" disabled>
-                  Select your role?
+                  Select your gender?
                 </option>
-                <option>Doctor</option>
-                <option>Nurse</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
               </select>
             </label>
           </div>
@@ -71,7 +125,7 @@ const AddUser = () => {
               <textarea
                 name="diagnosis"
                 className="input input-bordered input-primary w-full"
-              ></textarea>
+              />
             </label>
             <label className="form-control w-full">
               <div className="label">
@@ -79,6 +133,7 @@ const AddUser = () => {
               </div>
               <input
                 type="text"
+                name="bloodPressure"
                 placeholder="Blood Pressure"
                 className="input input-bordered input-primary w-full"
               />
@@ -89,6 +144,8 @@ const AddUser = () => {
               </div>
               <input
                 type="file"
+                name="prescription"
+                required
                 className="file-input file-input-bordered file-input-primary w-ful"
               />
             </label>
@@ -105,4 +162,4 @@ const AddUser = () => {
     </div>
   );
 };
-export default AddUser;
+export default AddPatient;
