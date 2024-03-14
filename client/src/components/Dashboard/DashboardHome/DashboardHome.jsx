@@ -196,7 +196,6 @@ const showPdf = (pdf)=>{
         <select
           defaultValue="default"
           className="select select-primary w-full max-w-xs"
-          onChange={(e)=> handleSort(e)}
         >
           <option value="default" disabled>
             Sort patients
