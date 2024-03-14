@@ -20,6 +20,7 @@ const AddUser = () => {
                 className="input input-bordered input-primary w-full"
               />
             </label>
+
             <label className="form-control w-full">
               <div className="label">
                 <span className="label-text">Age</span>
@@ -46,13 +47,18 @@ const AddUser = () => {
             </label>
             <label className="form-control w-full">
               <div className="label">
-                <span className="label-text">Blood Pressure</span>
+                <span className="label-text">Weight</span>
               </div>
-              <input
-                type="text"
-                placeholder="Blood Pressure"
-                className="input input-bordered input-primary w-full"
-              />
+              <select
+                defaultValue="default"
+                className="select select-primary w-full"
+              >
+                <option value="default" disabled>
+                  Select your role?
+                </option>
+                <option>Doctor</option>
+                <option>Nurse</option>
+              </select>
             </label>
           </div>
 
@@ -66,6 +72,16 @@ const AddUser = () => {
                 name="diagnosis"
                 className="input input-bordered input-primary w-full"
               ></textarea>
+            </label>
+            <label className="form-control w-full">
+              <div className="label">
+                <span className="label-text">Blood Pressure</span>
+              </div>
+              <input
+                type="text"
+                placeholder="Blood Pressure"
+                className="input input-bordered input-primary w-full"
+              />
             </label>
             <label className="form-control w-full">
               <div className="label">
