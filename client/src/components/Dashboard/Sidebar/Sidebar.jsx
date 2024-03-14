@@ -11,6 +11,8 @@ import { useState } from "react";
 // import usePathname
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { signOut } from "firebase/auth";
+import { auth } from "@/firebase/config";
 
 const Sidebar = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -51,7 +53,7 @@ const Sidebar = () => {
                 />
               </Link>
             </div>
-            <MdOutlineLogout size={30} className="text-white" />
+            <MdOutlineLogout onClick={()=> signOut(auth)} size={30} className="text-white hover:cursor-pointer" />
           </div>
         </div>
       </div>

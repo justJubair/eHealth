@@ -9,10 +9,19 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaFile } from "react-icons/fa";
 import { IoSearchOutline } from "react-icons/io5";
 
+// authenticate related imports
+import {useAuthState} from "react-firebase-hooks/auth"
+import { auth } from "@/firebase/config";
+import { useRouter } from "next/navigation";
 
 const DashboardHome = () => {
-  
 
+  const [user] = useAuthState(auth)
+  const router = useRouter()
+
+  if(!user){
+    router.push("/")
+  }
  
 
   return (
@@ -29,7 +38,7 @@ const DashboardHome = () => {
             />
           </div>
         </div>
-        <p className="text-gray-600 font-medium text-sm">Hey, </p>
+        <p className="text-gray-600 font-medium text-sm">{user?.email}</p>
       </div>
 
       {/* nurse, doctor and patients stats */}

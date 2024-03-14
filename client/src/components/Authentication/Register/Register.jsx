@@ -9,7 +9,6 @@ import { GiHealthPotion } from "react-icons/gi";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import useAuth from "@/hooks/useAuth";
 import { postUser } from "@/api/postUser";
 
 // imports for authentication
@@ -20,8 +19,7 @@ const Register = () => {
   // for redirecting
   const { push } = useRouter();
 
-  // get authprovider
-  const { setUser } = useAuth();
+
 
   const [createUserWithEmailAndPassword] =
     useCreateUserWithEmailAndPassword(auth);
