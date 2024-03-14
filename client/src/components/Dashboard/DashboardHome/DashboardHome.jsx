@@ -9,12 +9,15 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaFile } from "react-icons/fa";
 import { IoSearchOutline } from "react-icons/io5";
 
+
 // authenticate related imports
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/firebase/config";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import PatientUpdateModal from "./PatientUpdateModal";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 const DashboardHome = ({ patients }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -22,6 +25,52 @@ const DashboardHome = ({ patients }) => {
   const [user] = useAuthState(auth);
 
   const router = useRouter();
+
+  const handleDeletePatient = async(_id)=>{
+   
+      const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+          confirmButton: "btn btn-success",
+          cancelButton: "btn btn-danger"
+        },
+        buttonsStyling: false
+      });
+      swalWithBootstrapButtons.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "No, cancel!",
+        reverseButtons: true
+      }).then((result) => {
+        if (result.isConfirmed) {
+         axios.delete(`http://localhost:5000/patients/${_id}`).then((res)=>{
+          if(res?.data?.deletedCount>0){
+            swalWithBootstrapButtons.fire({
+              title: "Deleted!",
+              text: "Patient has been deleted.",
+              icon: "success"
+            });
+          }
+         })
+          
+         
+        } else if (
+          /* Read more about handling dismissals below */
+          result.dismiss === Swal.DismissReason.cancel
+        ) {
+          swalWithBootstrapButtons.fire({
+            title: "Cancelled",
+            text: "Patient is safe",
+            icon: "error"
+          });
+        }
+      });
+      
+    
+    
+  }
  
 
   useEffect(() => {
@@ -140,12 +189,12 @@ const DashboardHome = ({ patients }) => {
               <tr key={patient?._id}>
                 <th>{index+1}</th>
                 <td>{patient?._id}</td>
-                <td>{patient?.patient?.name}</td>
-                <td>{patient?.patient?.createdAt}</td>
+                <td>{patient?.name}</td>
+                <td>{patient?.createdAt}</td>
                 <td className="flex items-center gap-3">
                   <FaRegEdit onClick={()=>document.getElementById("modal"+patient?._id).showModal()} size={20} className="text-green-600 hover:cursor-pointer" />
-                  <PatientUpdateModal id={patient?._id} patient={patient?.patient}/>
-                  <RiDeleteBin6Line size={22} className="text-red-600" />
+                  <PatientUpdateModal id={patient?._id} patient={patient}/>
+                  <RiDeleteBin6Line onClick={()=> handleDeletePatient(patient?._id)} size={22} className="text-red-600 hover:cursor-pointer" />
                   <FaFile size={20} className="text-yellow-600" />
                 </td>
               </tr>

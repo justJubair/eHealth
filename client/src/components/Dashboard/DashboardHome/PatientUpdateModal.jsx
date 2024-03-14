@@ -1,5 +1,8 @@
+import axios from "axios";
+import toast from "react-hot-toast";
+
 const PatientUpdateModal = ({ id, patient }) => {
-  const handlePatientUpdate = (e) => {
+  const handlePatientUpdate = async(e) => {
     e.preventDefault();
     const form = e.target;
 
@@ -11,7 +14,11 @@ const PatientUpdateModal = ({ id, patient }) => {
     const bloodPressure = form.bloodPressure.value
 
     const updatedPatient = {name, age, weight, gender, diagnosis, bloodPressure}
-    console.log(updatedPatient)
+ 
+    const res = await axios.patch(`http://localhost:5000/patients/${id}`, updatedPatient)
+    if(res?.data?.modifiedCount>0){
+      toast.success("Patient Data Updated")
+    }
     
   };
   return (

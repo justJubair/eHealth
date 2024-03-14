@@ -1,9 +1,19 @@
 "use client";
 
+import { auth } from "@/firebase/config";
 import axios from "axios";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import toast from "react-hot-toast";
 
 const AddPatient = () => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  const [user] = useAuthState(auth);
+
+  const router = useRouter();
+
   // handle add patient form
   const handleAddPatient = async (e) => {
     e.preventDefault();
@@ -37,11 +47,30 @@ const AddPatient = () => {
       if(response?.data?.insertedId){
         toast.success("New Patient Added")
         form.reset()
+        
       } // Assuming the server responds with data
     } catch (e) {
       console.log(e);
     }
   };
+
+
+  useEffect(() => {
+    if (user) {
+      setIsLoading(false);
+    }
+  }, [user]);
+
+  if (isLoading) {
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <span className="loading loading-bars loading-lg"></span>
+      </div>
+    );
+  }
+  if (!user) {
+    router.push("/");
+  }
 
   return (
     <div>
