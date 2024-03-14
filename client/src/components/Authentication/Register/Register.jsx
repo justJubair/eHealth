@@ -10,9 +10,16 @@ import Link from "next/link";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import useAuth from "@/hooks/useAuth";
+import { postUser } from "@/api/postUser";
 
 const Register = () => {
+  // for redirecting
   const { push } = useRouter();
+  
+  // get authprovider
+  const {setUser} = useAuth()
+
   // handle register form
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -25,11 +32,12 @@ const Register = () => {
       return toast.error("Password must be at least six characters");
     }
     const user = { name, role, email, password, loggedIn: true };
-    const dbResponse = await axios.post("http://localhost:5000/users", user);
-    if (dbResponse?.data?.insertedId) {
+    const dbResponse = await postUser(user)
+    if (dbResponse?.insertedId) {
       toast.success("Registered successfully");
       form.reset();
       push("/dashboard");
+      setUser(user)
     }
   };
   return (

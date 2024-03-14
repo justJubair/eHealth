@@ -12,7 +12,7 @@ import useAuth from "@/hooks/useAuth";
 
 const DashboardHome = () => {
   const {user} = useAuth()
-  console.log(user)
+ console.log(user)
   return (
     <div className="mt-16 lg:mt-0">
       {/* avatar */}
