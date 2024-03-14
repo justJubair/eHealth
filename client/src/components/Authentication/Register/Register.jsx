@@ -12,12 +12,19 @@ import { useRouter } from "next/navigation";
 import useAuth from "@/hooks/useAuth";
 import { postUser } from "@/api/postUser";
 
+// imports for authentication
+import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { auth } from "@/firebase/config";
+
 const Register = () => {
   // for redirecting
   const { push } = useRouter();
-  
+
   // get authprovider
-  const {setUser} = useAuth()
+  const { setUser } = useAuth();
+
+  const [createUserWithEmailAndPassword] =
+    useCreateUserWithEmailAndPassword(auth);
 
   // handle register form
   const handleRegister = async (e) => {
@@ -26,16 +33,26 @@ const Register = () => {
     const name = form.name.value;
     const role = form.role.value;
     const email = form.email.value;
+    const password = form.password.value;
     if (password.length < 6) {
       return toast.error("Password must be at least six characters");
     }
-    const user = { name, role, email,};
-    const dbResponse = await postUser(user)
-    if (dbResponse?.insertedId) {
-      toast.success("Registered successfully");
-      form.reset();
-      push("/dashboard");
-      setUser(user)
+
+    try {
+      const res = await createUserWithEmailAndPassword(email, password);
+    
+      if (res?.user?.email) {
+        const user = { name, role, email };
+        const dbResponse = await postUser(user);
+        if (dbResponse?.insertedId) {
+          toast.success("Registered successfully");
+          form.reset();
+          push("/dashboard");
+          setUser(user);
+        }
+      }
+    } catch (e) {
+      console.log(e);
     }
   };
   return (
