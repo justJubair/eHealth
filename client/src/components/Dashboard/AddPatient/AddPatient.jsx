@@ -1,19 +1,13 @@
 "use client";
 
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const AddPatient = () => {
   // handle add patient form
   const handleAddPatient = async (e) => {
     e.preventDefault();
     const form = e.target;
-    // const name = form.name.value;
-    // const age = form.age.value;
-    // const weight = form.weight.value;
-    // const gender = form.gender.value;
-    // const diagnosis = form.diagnosis.value;
-    // const bloodPressure = form.bloodPressure.value;
-    // const prescriptionFile = form.prescription.files[0];
 
     const formData = new FormData();
 
@@ -40,7 +34,10 @@ const AddPatient = () => {
           },
         }
       );
-      console.log(response); // Assuming the server responds with data
+      if(response?.data?.insertedId){
+        toast.success("New Patient Added")
+        form.reset()
+      } // Assuming the server responds with data
     } catch (e) {
       console.log(e);
     }

@@ -1,10 +1,13 @@
+import { getAllPatients } from "@/api/getAllPatients";
 import DashboardHome from "@/components/Dashboard/DashboardHome/DashboardHome";
 
 
-const DashboardPage = () => {
+const DashboardPage = async() => {
+  const patients = await getAllPatients()
+  
   return (
     <div>
-        <DashboardHome/>
+        <DashboardHome patients={patients}/>
     </div>
   );
 };

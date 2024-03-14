@@ -1,8 +1,8 @@
 require("dotenv").config();
 const express = require("express");
-const { MongoClient, ServerApiVersion, } = require("mongodb");
+const { MongoClient, ServerApiVersion } = require("mongodb");
 const cors = require("cors");
-const multer = require("multer")
+const multer = require("multer");
 const app = express();
 
 const port = process.env.PORT || 5000;
@@ -10,6 +10,8 @@ const port = process.env.PORT || 5000;
 // middlewares
 app.use(cors());
 app.use(express.json());
+
+app.use("/files", express.static("files"));
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(process.env.dbURL, {
@@ -27,16 +29,15 @@ async function run() {
 
     const storage = multer.diskStorage({
       destination: function (req, file, cb) {
-        cb(null, './files')
+        cb(null, "./files");
       },
       filename: function (req, file, cb) {
-        const uniqueSuffix = Date.now()
-        cb(null, uniqueSuffix+file.originalname)
-      }
-    })
-    
-    const upload = multer({ storage: storage })
+        const uniqueSuffix = Date.now();
+        cb(null, uniqueSuffix + file.originalname);
+      },
+    });
 
+    const upload = multer({ storage: storage });
 
     const usersCollection = client.db("eHealthDB").collection("users");
     const patientCollection = client.db("eHealthDB").collection("patients");
@@ -59,21 +60,32 @@ async function run() {
       }
       const result = await usersCollection.findOne(query);
       res.send(result);
-    }); 
+    });
 
     // POST; a new patient
-    app.post("/patients",upload.single("prescription"), async (req, res) => {
-     const patient = req?.body
-     const prescription = req?.file?.filename
-     try{
-      const result = await patientCollection.insertOne({patient, prescription})
-      res.send(result)
-      
-     }
-     catch(err){
-      console.log(err)
-     }
+    app.post("/patients", upload.single("prescription"), async (req, res) => {
+      const patient = req?.body;
+      const prescription = req?.file?.filename;
+
+      const today = new Date();
+      const currentDate = today.toLocaleDateString();
+      patient.createdAt = currentDate;
+      try {
+        const result = await patientCollection.insertOne({
+          patient,
+          prescription,
+        });
+        res.send(result); 
+      } catch (err) {
+        console.log(err);
+      }
     });
+
+    // GET; all the patients
+    app.get("/patients", async(req,res)=>{
+      const result = await patientCollection.find().toArray()
+      res.send(result)
+    })
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });

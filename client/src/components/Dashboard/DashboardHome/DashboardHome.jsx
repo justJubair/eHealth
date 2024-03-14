@@ -14,10 +14,11 @@ import {useAuthState} from "react-firebase-hooks/auth"
 import { auth } from "@/firebase/config";
 import { useRouter } from "next/navigation";
 
-const DashboardHome = () => {
+const DashboardHome = ({patients}) => {
 
   const [user] = useAuthState(auth)
   const router = useRouter()
+  console.log(patients)
 
   if(!user){
     router.push("/")
