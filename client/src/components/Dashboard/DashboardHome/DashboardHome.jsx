@@ -54,6 +54,10 @@ const DashboardHome = () => {
   }
 
 
+// handle show pdf
+const showPdf = (pdf)=>{
+  window.open(`http://localhost:5000/files/${pdf}`, "_blank", "noreferer")
+}
 
 
   const handleDeletePatient = async(_id)=>{
@@ -237,7 +241,7 @@ const DashboardHome = () => {
                   <FaRegEdit onClick={()=>document.getElementById("modal"+patient?._id).showModal()} size={20} className="text-green-600 hover:cursor-pointer" />
                   <PatientUpdateModal id={patient?._id} patient={patient}/>
                   {currentUser?.role==="doctor" && <RiDeleteBin6Line onClick={()=> handleDeletePatient(patient?._id)} size={22} className="text-red-600 hover:cursor-pointer" />}
-                  <FaFile size={20} className="text-yellow-600" />
+                  <FaFile onClick={()=> showPdf(patient?.prescription)} size={20} className="text-yellow-600 hover:cursor-pointer" />
                 </td>
               </tr>
             ))}
