@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import Image from "next/image";
 // import icons
 import { FaUserNurse } from "react-icons/fa";
@@ -10,21 +10,36 @@ import { FaFile } from "react-icons/fa";
 import { IoSearchOutline } from "react-icons/io5";
 
 // authenticate related imports
-import {useAuthState} from "react-firebase-hooks/auth"
+import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/firebase/config";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import PatientUpdateModal from "./PatientUpdateModal";
 
-const DashboardHome = ({patients}) => {
+const DashboardHome = ({ patients }) => {
+  const [isLoading, setIsLoading] = useState(true);
 
-  const [user] = useAuthState(auth)
-  const router = useRouter()
-  console.log(patients)
+  const [user] = useAuthState(auth);
 
-  if(!user){
-    router.push("/")
-  }
+  const router = useRouter();
  
 
+  useEffect(() => {
+    if (user) {
+      setIsLoading(false);
+    }
+  }, [user]);
+
+  if (isLoading) {
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <span className="loading loading-bars loading-lg"></span>
+      </div>
+    );
+  }
+  if (!user) {
+    router.push("/");
+  }
   return (
     <div className="mt-16 lg:mt-0">
       {/* avatar */}
@@ -73,21 +88,26 @@ const DashboardHome = ({patients}) => {
       {/* search and filter patients */}
       <div className="flex gap-8 mb-10 items-center">
         <div className="relative max-w-xs w-full">
-        <input
-          type="text"
-          placeholder="Search..."
-          className="input input-bordered input-primary w-full"
-        />
-        <IoSearchOutline className="absolute top-3 text-purple-600 right-2" size={25}/>
+          <input
+            type="text"
+            placeholder="Search..."
+            className="input input-bordered input-primary w-full"
+          />
+          <IoSearchOutline
+            className="absolute top-3 text-purple-600 right-2"
+            size={25}
+          />
         </div>
-       
-        <select defaultValue="default" className="select select-primary w-full max-w-xs">
+
+        <select
+          defaultValue="default"
+          className="select select-primary w-full max-w-xs"
+        >
           <option value="default" disabled>
             Sort patients
           </option>
           <option>Newest patients</option>
           <option>Oldest patients</option>
-         
         </select>
       </div>
       {/* patients data in table format */}
@@ -105,8 +125,7 @@ const DashboardHome = ({patients}) => {
             </tr>
           </thead>
           <tbody>
-            {/* row 1 */}
-            <tr>
+            {/* <tr>
               <th>1</th>
               <td>Cy Ganderton</td>
               <td>Quality Control Specialist</td>
@@ -116,7 +135,21 @@ const DashboardHome = ({patients}) => {
                 <RiDeleteBin6Line size={22} className="text-red-600" />
                 <FaFile size={20} className="text-yellow-600" />
               </td>
-            </tr>
+            </tr> */}
+            {patients?.map((patient, index) => (
+              <tr key={patient?._id}>
+                <th>{index+1}</th>
+                <td>{patient?._id}</td>
+                <td>{patient?.patient?.name}</td>
+                <td>{patient?.patient?.createdAt}</td>
+                <td className="flex items-center gap-3">
+                  <FaRegEdit onClick={()=>document.getElementById("modal"+patient?._id).showModal()} size={20} className="text-green-600 hover:cursor-pointer" />
+                  <PatientUpdateModal id={patient?._id} patient={patient?.patient}/>
+                  <RiDeleteBin6Line size={22} className="text-red-600" />
+                  <FaFile size={20} className="text-yellow-600" />
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
