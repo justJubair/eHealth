@@ -1,3 +1,4 @@
+"use client";
 // import image
 import Image from "next/image";
 import LoginImg from "../../../assets/LoginImg.png";
@@ -5,7 +6,35 @@ import LoginImg from "../../../assets/LoginImg.png";
 // import icons
 import { GiHealthPotion } from "react-icons/gi";
 import Link from "next/link";
+
+// imports for authentication
+import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { auth } from "@/firebase/config";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+
 const Login = () => {
+  // for redirecting
+  const { push } = useRouter();
+
+  const [signInWithEmailAndPassword] = useSignInWithEmailAndPassword(auth);
+  
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const email = form.email.value;
+    const password = form.password.value;
+   
+    try {
+      const res = await signInWithEmailAndPassword(email, password);
+      if (res?.user?.email) {
+        toast.success("Logged In")
+        push("/dashboard");
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
   return (
     <div className="max-w-screen-lg mx-auto px-4">
       <div className="flex items-center justify-center gap-10">
@@ -44,16 +73,20 @@ const Login = () => {
               </p>
             </div>
           </div>
-          <h2 className="text-2xl text-center md:mb-6 mb-4 font-bold text-[#5b76d7] animate-pulse">Login Now</h2>
-          <form>
+          <h2 className="text-2xl text-center md:mb-6 mb-4 font-bold text-[#5b76d7] animate-pulse">
+            Login Now
+          </h2>
+          <form onSubmit={handleLogin}>
             <div className="flex flex-col gap-5">
               <input
                 type="email"
+                name="email"
                 placeholder="Emaill"
                 className="input input-bordered input-primary w-full "
               />
               <input
                 type="password"
+                name="password"
                 placeholder="Password"
                 className="input input-bordered input-primary w-full "
               />
@@ -66,11 +99,12 @@ const Login = () => {
             </button>
           </form>
           <div className="divider">OR</div>
-          <Link href="/register"
-              className="btn-block btn text-[#7488d1]  hover:bg-[#90A1DC] hover:text-white"
-            >
-              Sign up
-            </Link>
+          <Link
+            href="/register"
+            className="btn-block btn text-[#7488d1]  hover:bg-[#90A1DC] hover:text-white"
+          >
+            Sign up
+          </Link>
         </div>
       </div>
     </div>
