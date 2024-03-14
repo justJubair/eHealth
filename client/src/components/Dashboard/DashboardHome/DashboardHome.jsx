@@ -1,3 +1,4 @@
+"use client"
 import Image from "next/image";
 // import icons
 import { FaUserNurse } from "react-icons/fa";
@@ -7,8 +8,11 @@ import { FaRegEdit } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaFile } from "react-icons/fa";
 import { IoSearchOutline } from "react-icons/io5";
+import useAuth from "@/hooks/useAuth";
 
 const DashboardHome = () => {
+  const {user} = useAuth()
+  console.log(user)
   return (
     <div className="mt-16 lg:mt-0">
       {/* avatar */}
