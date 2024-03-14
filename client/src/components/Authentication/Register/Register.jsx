@@ -8,7 +8,6 @@ import { GiHealthPotion } from "react-icons/gi";
 
 import Link from "next/link";
 import toast from "react-hot-toast";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 import useAuth from "@/hooks/useAuth";
 import { postUser } from "@/api/postUser";
@@ -27,11 +26,10 @@ const Register = () => {
     const name = form.name.value;
     const role = form.role.value;
     const email = form.email.value;
-    const password = form.password.value;
     if (password.length < 6) {
       return toast.error("Password must be at least six characters");
     }
-    const user = { name, role, email, password, loggedIn: true };
+    const user = { name, role, email,};
     const dbResponse = await postUser(user)
     if (dbResponse?.insertedId) {
       toast.success("Registered successfully");

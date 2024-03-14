@@ -8,11 +8,13 @@ import { FaRegEdit } from "react-icons/fa";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { FaFile } from "react-icons/fa";
 import { IoSearchOutline } from "react-icons/io5";
-import useAuth from "@/hooks/useAuth";
+
 
 const DashboardHome = () => {
-  const {user} = useAuth()
- console.log(user)
+  
+
+ 
+
   return (
     <div className="mt-16 lg:mt-0">
       {/* avatar */}
@@ -27,7 +29,7 @@ const DashboardHome = () => {
             />
           </div>
         </div>
-        <p className="text-gray-600 font-medium text-sm">Hey, Chandler Bing</p>
+        <p className="text-gray-600 font-medium text-sm">Hey, </p>
       </div>
 
       {/* nurse, doctor and patients stats */}
