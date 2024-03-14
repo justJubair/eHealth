@@ -32,7 +32,7 @@ const Sidebar = () => {
     getUser()
   },[user])
 
-  console.log(currentUser)
+
   return (
     <>
       <div className="fixed lg:relative z-50">
