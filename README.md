@@ -62,7 +62,7 @@ npm install
    - Create a `.env` file in the root director of server and add your mongoDB connection string
 
    ```env
-  dbURL = "mongodb+srv://YourDB:Password@cluster0.hf0b3tt.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+    dbURL = "mongodb+srv://YourDB:Password@cluster0.hf0b3tt.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
    ```
 
 
