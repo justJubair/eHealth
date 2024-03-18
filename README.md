@@ -47,6 +47,7 @@ npm install
    - Obtain your Firebase configuration credentials.
    - Create a `.env.local` file in the root directory and add your Firebase configuration:
 
+
    ```env
    NEXT_PUBLIC_FIREBASE_API_KEY=your-api-key
    NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your-auth-domain
@@ -60,6 +61,7 @@ npm install
 
    - Install MongoDB and ensure it's running.
    - Create a `.env` file in the root director of server and add your mongoDB connection string
+
 
    ```env
     dbURL = "mongodb+srv://YourDB:Password@cluster0.hf0b3tt.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
